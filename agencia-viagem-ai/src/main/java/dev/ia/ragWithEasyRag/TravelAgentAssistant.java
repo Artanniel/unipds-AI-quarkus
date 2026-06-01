@@ -1,4 +1,4 @@
-package dev.ia;
+package dev.ia.ragWithEasyRag;
 
 import io.quarkiverse.langchain4j.RegisterAiService;
 
