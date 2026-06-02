@@ -14,6 +14,10 @@ Cada sub-projeto explora uma abordagem diferente de construção de agentes e as
 | [agencia-viagem-ai-pgvector](#-agencia-viagem-ai-pgvector) | RAG manual + pgvector | ✅ PostgreSQL | ❌ | ❌ | ⭐⭐ Intermediário |
 | [agencia-viagem-ai-agents](#-agencia-viagem-ai-agents) | RAG + pgvector | ✅ PostgreSQL | ✅ Tools | ❌ | ⭐⭐⭐ Avançado |
 | [agencia-viagem-ai-agents-with-session](#-agencia-viagem-ai-agents-with-session) | RAG + pgvector | ✅ PostgreSQL | ✅ Tools + Category | ✅ ThreadLocal | ⭐⭐⭐⭐ Expert |
+| [mcp-booking-server](#-mcp-booking-server) | ❌ | ❌ | Servidor MCP | ❌ | ⭐ Intermediário |
+| [mcp-booking-server-with-guardrails](#-mcp-booking-server-with-guardrails) | ❌ | ❌ | Servidor MCP | ❌ | ⭐⭐ Intermediário |
+| [travel-agency-ai-mcp](#-travel-agency-ai-mcp) | RAG + pgvector | ✅ PostgreSQL | ✅ Cliente MCP | ❌ | ⭐⭐⭐ Avançado |
+| [travel-agency-ai-mcp-guardrails](#-travel-agency-ai-mcp-guardrails) | RAG + pgvector | ✅ PostgreSQL | ✅ Cliente MCP + Guardrails | ❌ | ⭐⭐⭐⭐ Expert |
 
 ---
 
@@ -292,6 +296,54 @@ curl -X POST http://localhost:8080/travel \
 
 ---
 
+## 📦 mcp-booking-server
+
+> **Caminho:** `./mcp-booking-server`
+
+### O que é?
+
+Servidor MCP (Model Context Protocol) básico que expõe as capacidades de reservas (bookings) da agência de viagens. Utilizado para fornecer as ferramentas (tools) para os agentes inteligentes em outros projetos via protocolo MCP.
+
+📖 [README completo do projeto →](./mcp-booking-server/README.md)
+
+---
+
+## 📦 mcp-booking-server-with-guardrails
+
+> **Caminho:** `./mcp-booking-server-with-guardrails`
+
+### O que é?
+
+Servidor MCP avançado que, além de expor as ferramentas de reservas, conta com mecanismos de Server-Sent Events (SSE) e preparativos para trabalhar com clientes seguros usando guardrails.
+
+📖 [README completo do projeto →](./mcp-booking-server-with-guardrails/README.md)
+
+---
+
+## 📦 travel-agency-ai-mcp
+
+> **Caminho:** `./travel-agency-ai-mcp`
+
+### O que é?
+
+Agente inteligente que atua como **Cliente MCP**. Ele se conecta a um servidor MCP (como o `mcp-booking-server`) para descobrir e utilizar as ferramentas de reservas de forma dinâmica, além de contar com capacidades avançadas de RAG via pgvector.
+
+📖 [README completo do projeto →](./travel-agency-ai-mcp/README.md)
+
+---
+
+## 📦 travel-agency-ai-mcp-guardrails
+
+> **Caminho:** `./travel-agency-ai-mcp-guardrails`
+
+### O que é?
+
+O agente de viagens mais seguro e resiliente da série. Combina as funcionalidades de Cliente MCP com implementações rígidas de **AI Guardrails** (como ToneGuardrail, InjectionGuard, e JsonStructureGuard), garantindo que as interações sejam sempre seguras, profissionais e aderentes ao formato de dados estipulado.
+
+📖 [README completo do projeto →](./travel-agency-ai-mcp-guardrails/README.md)
+
+---
+
 ## 🎓 Jornada de Aprendizado
 
 Os projetos foram construídos em progressão para explorar os conceitos de IA aplicada em Java de forma gradual:
@@ -305,6 +357,15 @@ agencia-viagem-ai   →  agencia-viagem-ai-pgvector  →  agencia-viagem-ai-agen
   Zero infra             pgvector                     ReAct Pattern              Auth por Header
                                                                                  Memória por Usuário
                                                                                  Filtro por Categoria
+
+                                           [Nova Arquitetura Distribuída via MCP]
+
+mcp-booking-server  →  travel-agency-ai-mcp  →  travel-agency-ai-mcp-guardrails
+     ⭐⭐                      ⭐⭐⭐                           ⭐⭐⭐⭐
+
+ Servidor MCP            Cliente MCP                  Cliente MCP Seguro
+                         Descobre Tools via rede      Validadores Interceptores
+                                                      (Guardrails)
 ```
 
 Recomendado estudar nessa ordem para absorver os conceitos de forma incremental.

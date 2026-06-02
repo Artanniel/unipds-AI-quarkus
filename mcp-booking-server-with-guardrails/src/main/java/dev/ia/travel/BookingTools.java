@@ -13,7 +13,7 @@ public class BookingTools {
     @Inject
     BookingService bookingService;
 
-    @Tool(name = "Obtém os detalhes completos de uma reserva com base em seu número de identificação (bookingId).")
+    @Tool(name = "getBookingDetails", description = "Obtém os detalhes completos de uma reserva com base em seu número de identificação (bookingId).")
     public String getBookingDetails(
             @ToolArg(description = "O ID numérico único da reserva (ex: 12345)") long bookingId) {
         return bookingService.getBookingDetails(bookingId)
@@ -21,7 +21,7 @@ public class BookingTools {
                 .orElse("Reserva com ID " + bookingId + " não encontrada.");
     }
 
-    @Tool(name = """
+    @Tool(name = "cancelBooking", description = """
                 Cancela uma reserva existente com base no seu ID (bookingId).
                 O usuário deve estar autenticado.
             """)
@@ -33,7 +33,7 @@ public class BookingTools {
                 .orElse("Não foi possível cancelar a reserva. Verifique se o ID está correto e se você tem permissão.");
     }
 
-    @Tool(name = "Lista os pacotes de viagem disponíveis para uma determinada categoria (ex: ADVENTURE, TREASURES).")
+    @Tool(name = "listPackagesByCategory", description = "Lista os pacotes de viagem disponíveis para uma determinada categoria (ex: ADVENTURE, TREASURES).")
     public String listPackagesByCategory(
             @ToolArg(description = "Categoria utilizada como filtro para pacotes") Category category) {
         List<Booking> packages = bookingService.findPackagesByCategory(category);
