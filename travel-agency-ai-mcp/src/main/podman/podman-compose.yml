@@ -1,0 +1,49 @@
+x-podman:
+  in_pod: false
+
+services:
+  ollama:
+    image: docker.io/ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_ORIGINS=*
+      - OLLAMA_HOST=0.0.0.0
+      - OLLAMA_API_KEY=b20243586a9c42fcbb8376e4446bac83.F3VyCls-oOYLljfyECSJUIQy
+    # Para usar GPU NVIDIA: descomente as linhas abaixo e garanta que o
+    # nvidia-container-toolkit esteja instalado no host.
+    # devices:
+    #   - nvidia.com/gpu=all
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    restart: unless-stopped
+    ports:
+      - "3000:8080"
+    volumes:
+      - open_webui_data:/app/backend/data
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_API_KEY=b20243586a9c42fcbb8376e4446bac83.F3VyCls-oOYLljfyECSJUIQy
+      - WEBUI_AUTH=false           # mude para true para habilitar login
+      - ENABLE_SIGNUP=true
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+volumes:
+  ollama_data:
+    driver: local
+  open_webui_data:
+    driver: local
